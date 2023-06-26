@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+            list-style: none;
+        }
+
+        .app {
+            width: 1980px;
+            height: 1080px;
+            border: 1px solid black;
+        }
+
+        .head {
+            height: 50px;
+            line-height:50px;
+            text-align: center;
+            border: 1px solid black;
+        }
+        .main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .main div{
+            height: 300px;
+            width: 650px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 页面整体 -->
+    <div class="app">
+        <!-- 头部 -->
+        <div class="head">
+            <p>标题</p>
+        </div>
+        <!-- 主体部分 外部盒子 -->
+        <div class="main">
+            <!--盒子左侧 -->
+            <div>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+            </div>
+            <!--盒子中部 -->
+            <div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+            </div>
+            <!--盒子右侧 -->
+            <div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
