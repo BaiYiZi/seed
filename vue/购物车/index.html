@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+            box-sizing: border-box;
+        }
+        table {
+            width: 400px;
+            height: 100px;
+            border: 1px solid;
+        }
+        table tr td {
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="root">
+        <div class="title">购物车</div>
+        <table>
+            <tr>
+                <td>ID</td>
+                <td>名称</td>
+                <td>价格</td>
+                <td>数量</td>
+                <td>操作</td>
+            </tr>
+            <tr v-for="item in list">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.movey}}</td>
+                <td>
+                    <button @click="item.number--" :disabled="item.number == 0">-</button>
+                    {{item.number}}
+                    <button @click="item.number++">+</button>
+                </td>
+                <td><button @click="item.number = 0">清空</button></td>
+            </tr>
+        </table>
+        <hr>
+        <label>总价:{{sum}}</label>&nbsp;<label>商品种类:{{list.length}}</label>&nbsp;<label>商品总数量:{{sum2}}</label>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+    new Vue({
+        data() {
+            return {
+                list: [
+                    { id: '001', name: '手机', movey: 10, number: 0, },
+                    { id: '002', name: '手机', movey: 12, number: 0, },
+                    { id: '003', name: '手机', movey: 14, number: 0, },
+                    { id: '004', name: '手机', movey: 16, number: 0, },
+                ]
+            }
+        },
+       computed:{
+        // 计算总价 定义方法
+        sum(){
+            // 定义初始值
+            let todo = 0
+            // 遍历相加
+            this.list.forEach(function(item) {
+                // 累加 商品数量 * 商品价格
+                todo += item.movey * item.number
+            });
+            return todo
+        },
+        sum2(){
+            // 定义初始值
+            let todo = 0
+            // 遍历
+            this.list.forEach(function(item){
+                todo += item.number
+            })
+            return todo
+        }
+       },
+       methods: {
+        
+       },
+    }).$mount('.root')
+</script>
+
+</html>
