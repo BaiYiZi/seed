@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ShoppingCart</title>
+
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #app
+        {
+            height: 530px;
+            width: 900px;
+            position: relative;
+            margin: auto;
+            margin-top: 100px;
+            background-color: #fcfcfc;
+            box-shadow: 0px 0px 20px rgb(207, 207, 207);
+            border-radius: 10px;
+
+        }
+
+        table
+        {
+            border-collapse: collapse;
+            text-align: center;
+            width: 600px;
+            margin: auto;
+        }
+
+        table td, table th
+        {
+            border: 1px solid #c8ebde;
+            color: #666;
+            height: 40px;
+        }
+
+        table th
+        {
+            background-color: #77dabc;
+            color: white;
+            width: 100px;
+        }
+
+        table tr:nth-child(odd)
+        {
+            background: #fff;
+        }
+
+        table tr:nth-child(even)
+        {
+            background: #f5faf8;
+        }
+
+        button 
+        {
+            height: 28px;
+            width: 28px;
+            border: 2px solid #ececec;
+            background-color: #fbfbfb;
+            border-radius: 14px;
+        }
+
+        button:hover
+        {
+            background-color: #f4f4f4;
+        }
+        
+        .clean
+        {
+            height: 30px;
+            width: 40px;
+            border-radius: 5px;
+        }
+
+        .add
+        {
+            height: 30px;
+            width: 85px;
+            border-radius: 5px;
+        }
+
+        .form_1
+        {
+            width:380px;
+            height:300px;
+            position: absolute;
+            left: 25%;
+            bottom: 150px;
+            z-index: 999;
+            background-color: white;
+            opacity: 1;
+            box-shadow: 0px 0px 20px rgb(207, 207, 207);
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        /* .background
+        {
+            position: absolute;
+            height: 1000px;
+            width: 1000px;
+            z-index: 998;
+            background-color: rgba(64, 64, 64, 0.268);
+        } */
+
+        input
+        {
+            height: 23px;
+            width: 180px;
+            border: 2px solid rgb(166, 166, 166);
+            border-radius: 7px;
+            margin-bottom: 8px;
+        }
+
+        label
+        {
+            font-size: large;
+            color: #494949;
+        }
+
+        h1 
+        {
+            text-align: center;
+            height: 100px;
+            line-height: 100px;
+            color: #525252;
+        }
+
+        h2 
+        {
+            color: #525252;
+            margin-top: 30px;
+            width: 230px;
+            float: right;
+        }
+
+        h3
+        {
+            padding: 30px;
+            color: #525252;
+            font-size: 25px;
+            font-weight: bolder;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+    <h1>购物车</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>价格</th>
+            <th>数量</th>
+            <th>操作</th>
+        </tr>
+        <tr v-for="(item,index) in goods" :key="index">
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.price }}</td>
+            <td>
+                <button @click="item.num--" :disabled="item.num == 0">-</button>
+                {{ item.num }}
+                <button @click="item.num++">+</button>
+            </td>
+            <td> 
+                <button class="clean" @click="item.num = 0">清空</button>
+                <button class="clean" @click=deleteGoods(index)>删除</button>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><button class="add" @click=openGoodsInfo()>添加</button></td>
+        </tr>
+    </table>
+
+    <h2>总价：
+        <span style="color: #77dabc;">{{ totalPrice }}</span>
+    </h2>
+
+    <!-- 添加对话框 -->
+    <div v-show="UpdateVisible" class="background">
+        <div class="form_1">
+            <h3>添加商品</h3>
+
+            <label for="name">名称:&nbsp;</label>
+            <input id="name" type="text" v-model:value="name"><br>
+            
+            <label for="price">价格:&nbsp;</label>
+            <input id="price" type="text" v-model:value="price"><br>
+
+            <label for="num">数量:&nbsp;</label>
+            <input id="num" type="text" v-model:value="num"><br>
+
+            <br>
+            <button class="clean" @click=addGoods()>添加</button>
+            <button class="clean" @click=closeGoodsInfo()>取消</button>
+        </div>
+    </div>
+
+    </div>
+
+
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                id: "",
+                name: "",
+                price: "",
+                num: "",
+
+                UpdateVisible: false,
+
+                goods: [
+                    {
+                        id: 1,
+                        name: "T恤",
+                        price: 115.8,
+                        num: 1
+                    },
+                        {
+                        id: 2,
+                        name: "外套",
+                        price: 128.9,
+                        num: 1
+                    },
+                    {
+                        id: 3,
+                        name: "裤子",
+                        price: 109.9,
+                        num: 1
+                    },
+                    {
+                        id: 4,
+                        name: "鞋子",
+                        price: 135.9,
+                        num: 1
+                    }
+                ]
+            }, 
+            computed: {
+                totalPrice(){
+                    let sum = 0;
+                    this.goods.forEach(function(item){
+                        sum += item.price * item.num;
+                    });
+                    return sum.toFixed(2);
+                }
+            },methods:{
+                deleteGoods(index){
+                    console.log("删除了下标为：" + index + "的元素");
+                    this.goods.splice(index, 1);
+                },
+
+                openGoodsInfo() {
+                    this.UpdateVisible = true
+                },
+
+                closeGoodsInfo() {
+                    this.name = "";
+                    this.price = "";
+                    this.num = "";
+                    this.UpdateVisible = false
+                },
+
+                addGoods() {
+                    if(this.name != "" & this.price != "" & this.num.pricee != "" & this.num.pricee == "^[0-9]$") {
+                        let tmp = {
+                            id: this.goods.length + 1,
+                            name: this.name,
+                            price: this.price,
+                            num: parseInt(this.num)
+                        };
+                        this.goods.push(tmp);
+                        this.name = "";
+                        this.price = "";
+                        this.num = "";
+                        this.UpdateVisible = false;
+                    } else {
+                        alert("请填写完整！")
+                    }
+                    
+                }
+            }
+        })
+    </script>
+</body>
+</html>
