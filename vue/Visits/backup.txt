@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visits</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="container" style="width: 1000px; height: 500px"></div>
+        <button @click=draw()>刷新</button>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                code: "",
+                message: "",
+                dataList: [],
+                timer:null
+            },
+            methods: {
+                getData(){
+                    axios.get('http://43.143.208.137:18080/api/visits/group/unit')
+                        .then(response => {
+                            this.code = response.data.code;
+                            this.message = response.data.message;
+                            this.dataList = response.data.data;
+                        })
+                        .catch(function (error) {
+                            this.dataList = [];
+                            alert("服务器繁忙");
+                        })
+                },
+                draw() {
+                    var list = this.dataList;
+                    var xAxisList = [];
+                    var yAxisList = [];
+
+                    for (let index = 0; index < list.length; index++) {
+                        xAxisList.push(list[index].unitName);
+                        yAxisList.push(list[index].count);
+                    }
+
+                    console.log(xAxisList);
+                    console.log(yAxisList);
+
+                    var chartDom = document.getElementById('container');
+                    var myChart = echarts.init(chartDom);
+                    var option;
+
+                    option = {
+                        xAxis: {
+                            type: 'category',
+                            data: xAxisList
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                data: yAxisList,
+                                type: 'bar'
+                            }
+                        ]
+                    };
+                    console.log(option.xAxis.data);
+                    console.log(option.series.data)
+                    option && myChart.setOption(option);
+                }
+            },
+            created() {
+                this.getData();
+            },
+            mounted() {
+                this.draw();
+            }
+            // mounted() {
+            //     this.getData();
+            //     this.timer = setInterval(() => {
+            //         setTimeout(this.queryInfo, 0)
+            //     }, 1000 * 60)
+            // },
+            // watch: {
+            //     dataList: {
+            //         handler(newValue, oldValue) {
+            //             console.log(newValue);
+            //             console.log(oldValue);
+            //             this.draw();
+            //         },
+            //         deep: true,
+            //         immediate: true,
+            //     },
+            // }
+        })
+    </script>
+</body>
+</html>

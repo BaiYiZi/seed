@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visits</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="container" style="width: 1000px; height: 500px"></div>
+        <button @click=draw()>刷新</button>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                code: "",
+                message: "",
+                dataList: [],
+            },
+            methods: {
+                getData() {
+                    axios.get('http://43.143.208.137:18080/api/visits/group/unit')
+                        .then(response => {
+                            if (response.data.code == 200) {
+                                this.data = response.data;
+                                console.log(this.data);
+                            } else {
+                                alert(response.data.message);
+                            }
+                        })
+                        .catch(function (error) {
+                            this.dataList = [];
+                            alert("服务器繁忙");
+                        });
+                },
+                draw() {
+                    var chartDom = document.getElementById('container');
+                    var myChart = echarts.init(chartDom);
+                    var option;
+
+                    myChart.showLoading();
+                    axios.get('http://43.143.208.137:18080/api/visits/group/unit').then(res => {
+                        const data = res.data.data;
+
+                        var xAxisList = [];
+                        var yAxisList = [];
+
+                        for (let index = 0; index < data.length; index++) {
+                            xAxisList.push(data[index].unitName);
+                            yAxisList.push(data[index].count);
+                        }
+
+                        myChart.hideLoading(); //隐藏加载动画
+
+                        myChart.setOption({
+                            xAxis: {
+                                type: 'category',
+                                data: xAxisList
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            series: [
+                                {
+                                    data: yAxisList,
+                                    type: 'bar'
+                                }
+                            ]
+                        });
+                    });
+                },
+            },
+            created() {
+                console.log("created()执行");
+                this.getData();
+            },
+            mounted() {
+                this.draw();
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+    "code": "200",
+    "message": "获取成功",
+    "data": [
+        {
+            "unitId": "1",
+            "unitName": "一楼",
+            "count": 12
+        },
+        {
+            "unitId": "2",
+            "unitName": "二楼",
+            "count": 13
+        },
+        {
+            "unitId": "3",
+            "unitName": "三楼",
+            "count": 12
+        }
+    ]
+}
