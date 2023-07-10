@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>01</title>
+    <style>
+        
+        .header {
+            border:1px black solid;
+            height: 60px;
+            width: 100%;
+            display: flex;
+            /* 主轴为垂直方向，起点在上沿 */
+            flex-direction: column;
+            /* nowrap（默认）：不换行 */
+            flex-wrap: nowrap;
+            /* 两端对齐，项目之间的间隔都相等 */
+            justify-content: center;
+            /* 交叉轴的起点对齐 */
+            align-items: flex-start;
+            margin: 5px;
+        }
+        .box {
+            /* border:3px #c3c3c3 solid; */
+            height: 640px;
+            width: 100%;
+            display: flex;
+            /* 主轴为垂直方向，起点在上沿 */
+            flex-direction: row;
+            /* nowrap（默认）：不换行 */
+            flex-wrap: nowrap;
+            /* 两端对齐，项目之间的间隔都相等 */
+            justify-content: space-between;
+            /* 交叉轴的起点对齐 */
+            align-items: flex-start;
+            /* 最小长度 */
+            min-height: 100px;
+        }
+        .center {
+            /* border:2px black solid; */
+            display: flex;
+            flex-grow: 2;
+            height: 100%;
+            width: 100%;
+        }
+        .left {
+            /* border:2px black solid; */
+            display: flex;
+            flex-grow: 1;
+            /* 主轴为垂直方向，起点在上沿 */
+            flex-direction: column;
+            height: 100%
+        }
+        .right {
+            /* border:2px black solid; */
+            display: flex;
+            flex-grow: 1;
+            /* 主轴为垂直方向，起点在上沿 */
+            flex-direction: column;
+            height: 100%
+        }
+        .inner {
+            border:1px black solid;
+            height: 226px;
+            width: 350px;
+            margin: 5px;
+        }
+        .center .inner {
+            border:1px rgb(0, 0, 0) solid;
+            height: 98.5%;
+            flex: 1;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header"></div>
+    <div class="box">
+        <div class="left">
+            <div class="inner"></div>
+            <div class="inner"></div>
+            <div class="inner"></div>
+        </div>
+        <div class="center">
+            <div class="inner"></div>
+        </div>
+        <div class="right">
+            <div class="inner"></div>
+            <div class="inner"></div>
+            <div class="inner"></div>
+        </div>
+    </div>
+</body>
+</html>
