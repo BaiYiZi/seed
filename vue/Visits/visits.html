@@ -20,6 +20,7 @@
                 message: "",
                 dataList: [],
             },
+            timer: {},
             methods: {
                 getData() {
                     axios.get('http://43.143.208.137:18080/api/visits/group/unit')
@@ -41,8 +42,9 @@
                     var myChart = echarts.init(chartDom);
                     var option;
 
-                    myChart.showLoading();
+                    // myChart.showLoading();
                     axios.get('http://43.143.208.137:18080/api/visits/group/unit').then(res => {
+                        this.dataList = res.data;
                         const data = res.data.data;
 
                         var xAxisList = [];
@@ -78,7 +80,9 @@
                 this.getData();
             },
             mounted() {
+                console.log("mounted()执行");
                 this.draw();
+                this.timer = setInterval(this.draw, 20000);
             }
         })
     </script>
